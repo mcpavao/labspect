@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="fr" data-lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mateus Pavão — Ingénieur cloud, Lyon</title>
+<meta name="description" content="Ingénieur cloud à Lyon. Terraform, AWS, Docker, Kubernetes — et six ans d’affrètement routier européen.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════
+   TOKENS
+   ═══════════════════════════════════════════════ */
+:root{
+  --navy-900:#0c1e33;
+  --navy-800:#12293f;
+  --ink:#132a42;
+  --ink-soft:#5b7086;
+  --paper:#f2f5f8;
+  --panel:#ffffff;
+  --signal:#f0a83c;   /* ambre gyrophare */
+  --road:#4a90d9;     /* bleu panneau */
+  --teal:#3fb6a8;
+  --slate:#6e8093;
+  --rule:#d7dee6;
+  --rule-dk:rgba(255,255,255,.15);
+
+  --sans:"Archivo",system-ui,-apple-system,sans-serif;
+  --serif:"Newsreader",Georgia,serif;
+
+  --pad:clamp(1.25rem,5vw,3.5rem);
+  --gap:clamp(4rem,8vw,7rem);
+  --shadow:0 1px 2px rgba(19,42,66,.06),0 8px 24px -12px rgba(19,42,66,.18);
+  --shadow-lg:0 2px 4px rgba(19,42,66,.06),0 24px 48px -20px rgba(19,42,66,.28);
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font:400 1.0625rem/1.65 var(--sans);
+  font-feature-settings:"tnum" 1;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{margin:0;font-weight:700;letter-spacing:-.025em;line-height:1.1}
+p{margin:0 0 1rem}
+ul,ol{margin:0;padding:0;list-style:none}
+img{max-width:100%;display:block}
+a{color:var(--road);text-decoration-thickness:1px;text-underline-offset:.2em}
+a:hover{color:var(--ink)}
+:focus-visible{outline:3px solid var(--signal);outline-offset:3px;border-radius:2px}
+
+.wrap{max-width:70rem;margin-inline:auto;padding-inline:var(--pad)}
+.prose{font-family:var(--serif);font-size:1.1875rem;line-height:1.72;max-width:62ch}
+.skip{position:absolute;left:-9999px}
+.skip:focus{left:1rem;top:1rem;z-index:99;background:var(--navy-900);color:#fff;padding:.7rem 1.1rem;border-radius:4px}
+
+body[data-lang="fr"] [lang="en"]{display:none}
+body[data-lang="en"] [lang="fr"]{display:none}
+
+.ico{width:1.25rem;height:1.25rem;flex:none;stroke:currentColor;fill:none;
+     stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.ico--lg{width:1.75rem;height:1.75rem}
+
+/* ═══════════════ BARRE ═══════════════ */
+.dock{position:sticky;top:0;z-index:20;background:rgba(12,30,51,.9);
+      backdrop-filter:blur(12px);border-bottom:1px solid var(--rule-dk);color:#fff}
+.dock__in{display:flex;align-items:center;gap:1.25rem;padding-block:.85rem}
+.dock__mark{display:flex;align-items:center;gap:.6rem;font-weight:700;font-size:1rem;color:#fff;text-decoration:none}
+.dock__mark .ico{color:var(--signal)}
+.dock__nav{display:flex;gap:1.5rem;margin-left:auto;font-size:.9375rem;font-weight:500}
+.dock__nav a{color:rgba(255,255,255,.72);text-decoration:none}
+.dock__nav a:hover{color:var(--signal)}
+.lang{display:flex;gap:.15rem;border:1px solid var(--rule-dk);border-radius:999px;padding:2px}
+.lang button{font:600 .75rem/1 var(--sans);letter-spacing:.03em;background:none;border:0;
+             color:rgba(255,255,255,.6);padding:.35rem .6rem;cursor:pointer;border-radius:999px}
+.lang button[aria-pressed="true"]{background:var(--signal);color:var(--navy-900)}
+@media (max-width:56rem){.dock__nav{display:none}.lang{margin-left:auto}}
+
+/* ═══════════════ HÉROS ═══════════════ */
+.hero{position:relative;color:#fff;overflow:hidden;
+      background:
+        radial-gradient(70rem 40rem at 85% 12%,rgba(74,144,217,.24),transparent 62%),
+        linear-gradient(165deg,var(--navy-800),var(--navy-900) 66%)}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;
+  background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);
+  background-size:26px 26px}
+.hero__in{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr .95fr;
+          gap:clamp(2rem,4vw,4rem);align-items:center;padding-block:clamp(3.5rem,7vw,6rem)}
+.hero__eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-size:.875rem;font-weight:500;
+               color:var(--signal);background:rgba(240,168,60,.12);
+               border:1px solid rgba(240,168,60,.3);border-radius:999px;padding:.35rem .85rem;margin-bottom:1.5rem}
+.hero__dot{width:.5rem;height:.5rem;border-radius:50%;background:var(--signal);animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-size:clamp(2.1rem,4.6vw,3.6rem);font-weight:800;margin-bottom:1.4rem;max-width:16ch}
+.hero__sub{font-family:var(--serif);font-size:clamp(1.05rem,1.6vw,1.25rem);line-height:1.65;
+           color:rgba(255,255,255,.74);max-width:46ch;margin-bottom:2rem}
+.cta{display:flex;flex-wrap:wrap;gap:.75rem}
+.btn{display:inline-flex;align-items:center;gap:.5rem;font:600 .9375rem/1 var(--sans);
+     padding:.85rem 1.25rem;border-radius:6px;text-decoration:none;border:1px solid transparent;
+     transition:transform .12s ease,background .15s ease}
+.btn:active{transform:translateY(1px)}
+.btn--solid{background:var(--signal);color:var(--navy-900)}
+.btn--solid:hover{background:#ffbc55;color:var(--navy-900)}
+.btn--ghost{border-color:var(--rule-dk);color:#fff}
+.btn--ghost:hover{background:rgba(255,255,255,.08);color:#fff}
+@media (max-width:56rem){.hero__in{grid-template-columns:1fr}}
+
+/* carte des routes */
+.map{width:100%;height:auto}
+.map__grid{stroke:rgba(255,255,255,.09);stroke-width:1}
+.map__arc{fill:none;stroke:rgba(255,255,255,.3);stroke-width:1.5;stroke-dasharray:3 5}
+.map__run{fill:none;stroke:var(--signal);stroke-width:2.5;stroke-linecap:round;
+          stroke-dasharray:28 660;animation:run 7s linear infinite}
+@keyframes run{from{stroke-dashoffset:688}to{stroke-dashoffset:0}}
+.map__node{fill:var(--navy-900);stroke:#fff;stroke-width:2}
+.map__node--live{fill:var(--signal);stroke:var(--signal)}
+.map__halo{fill:none;stroke:var(--signal);stroke-width:1.5;opacity:.55;animation:halo 2.8s ease-out infinite}
+@keyframes halo{0%{r:7;opacity:.6}100%{r:20;opacity:0}}
+.map__code{fill:#fff;font:700 13px var(--sans);letter-spacing:.04em}
+.map__city{fill:rgba(255,255,255,.55);font:400 11px var(--sans)}
+.map__leg{fill:rgba(255,255,255,.42);font:500 10px var(--sans)}
+@media (prefers-reduced-motion:reduce){
+  .map__run,.map__halo,.hero__dot{animation:none}
+  .map__run{stroke-dasharray:none;opacity:.9}
+}
+
+/* bandeau chiffres */
+.figs{position:relative;z-index:1;border-top:1px solid var(--rule-dk);
+      display:grid;grid-template-columns:repeat(4,1fr)}
+.fig{padding:1.6rem 1.25rem;border-left:1px solid var(--rule-dk)}
+.fig:first-child{border-left:0;padding-left:0}
+.fig__ico{color:var(--road);margin-bottom:.6rem}
+.fig__n{font-size:1.75rem;font-weight:700;letter-spacing:-.03em;line-height:1}
+.fig__l{font-size:.875rem;color:rgba(255,255,255,.6);margin-top:.35rem}
+@media (max-width:56rem){
+  .figs{grid-template-columns:1fr 1fr}
+  .fig{border-left:0;padding-inline:0}
+  .fig:nth-child(2),.fig:nth-child(4){padding-left:1.25rem;border-left:1px solid var(--rule-dk)}
+}
+
+/* ═══════════════ SECTIONS ═══════════════ */
+.band{padding-block:var(--gap)}
+.band--panel{background:var(--panel);border-block:1px solid var(--rule)}
+.band--dark{background:var(--navy-900);color:#fff}
+.head{margin-bottom:2.75rem;max-width:46rem}
+.head__kicker{display:flex;align-items:center;gap:.55rem;color:var(--road);
+              font-size:.875rem;font-weight:600;margin-bottom:.7rem}
+.band--dark .head__kicker{color:var(--signal)}
+.head h2{font-size:clamp(1.6rem,3vw,2.25rem)}
+.head p{font-family:var(--serif);color:var(--ink-soft);font-size:1.0625rem;margin:.9rem 0 0;max-width:56ch}
+.band--dark .head p{color:rgba(255,255,255,.66)}
+
+/* profil */
+.split{display:grid;grid-template-columns:18rem 1fr;gap:clamp(2rem,4vw,3.5rem);align-items:start}
+@media (max-width:56rem){.split{grid-template-columns:1fr}}
+.portrait{position:relative;margin:0;border-radius:10px;overflow:hidden;
+          box-shadow:var(--shadow-lg);aspect-ratio:4/5;background:var(--navy-800)}
+.portrait img{width:100%;height:100%;object-fit:cover}
+.portrait__ph{position:absolute;inset:0;display:grid;place-content:center;gap:.5rem;text-align:center;
+  color:rgba(255,255,255,.55);font-size:.8125rem;line-height:1.5;padding:1.5rem;
+  background:repeating-linear-gradient(135deg,rgba(255,255,255,.045) 0 10px,transparent 10px 20px)}
+.portrait__ph b{display:block;font-size:2rem;color:rgba(255,255,255,.9);letter-spacing:-.03em}
+
+/* graphique carrière */
+.chart{margin-top:2.5rem;background:var(--panel);border:1px solid var(--rule);
+       border-radius:10px;padding:clamp(1.25rem,3vw,2rem);box-shadow:var(--shadow)}
+.band--panel .chart{background:var(--paper)}
+.chart__top{display:flex;flex-wrap:wrap;gap:1.25rem;align-items:baseline;margin-bottom:1.5rem}
+.chart__title{font-size:1.0625rem;font-weight:600}
+.chart__key{display:flex;gap:1rem;margin-left:auto;font-size:.8125rem;color:var(--ink-soft)}
+.chart__key>span{display:inline-flex;align-items:center;gap:.4rem}
+.swatch{width:.75rem;height:.75rem;border-radius:2px;display:inline-block}
+.track{position:relative;height:2.75rem}
+.track__label{position:absolute;left:0;top:50%;transform:translateY(-50%);
+              font-size:.8125rem;font-weight:600;width:6.5rem}
+.track__rail{position:absolute;left:7rem;right:0;top:50%;transform:translateY(-50%);
+             height:1.5rem;background:rgba(19,42,66,.06);border-radius:4px}
+.bar{position:absolute;top:0;height:100%;border-radius:4px;display:flex;align-items:center;
+     padding-inline:.55rem;font-size:.75rem;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden}
+.bar--log{background:var(--road)}
+.bar--tech{background:var(--teal)}
+.bar--fin{background:var(--slate)}
+.bar--study{background:transparent;border:1px dashed var(--ink-soft);color:var(--ink-soft)}
+.axis{position:relative;height:1.6rem;margin-left:7rem;border-top:1px solid var(--rule)}
+.axis span{position:absolute;top:.35rem;transform:translateX(-50%);font-size:.75rem;color:var(--ink-soft)}
+@media (max-width:46rem){
+  .track__label{position:static;transform:none;width:auto;display:block;margin-bottom:.35rem}
+  .track{height:auto;margin-bottom:1.1rem}
+  .track__rail{position:relative;left:0;top:0;transform:none}
+  .axis{margin-left:0}
+}
+
+/* projets */
+.cards{display:grid;gap:1.75rem}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:12px;overflow:hidden;
+      display:grid;grid-template-columns:20rem 1fr;box-shadow:var(--shadow);
+      transition:box-shadow .2s ease,border-color .2s ease}
+.card:hover{box-shadow:var(--shadow-lg);border-color:#b9c6d3}
+.band--panel .card{background:var(--paper)}
+@media (max-width:56rem){.card{grid-template-columns:1fr}}
+.shot{position:relative;background:var(--navy-800);min-height:12rem}
+.shot img{width:100%;height:100%;object-fit:cover}
+.shot__ph{position:absolute;inset:0;display:grid;place-content:center;text-align:center;gap:.45rem;
+  color:rgba(255,255,255,.5);font-size:.8125rem;line-height:1.5;padding:1.25rem;
+  background:repeating-linear-gradient(135deg,rgba(255,255,255,.05) 0 10px,transparent 10px 20px)}
+.shot__ph .ico{color:rgba(255,255,255,.35);margin-inline:auto;width:2rem;height:2rem}
+.card__body{padding:clamp(1.25rem,3vw,2rem)}
+.card__head{display:flex;align-items:center;gap:.6rem;margin-bottom:.6rem}
+.card__head .ico{color:var(--road)}
+.card__name{font-size:1.25rem}
+.card__claim{font-family:var(--serif);font-style:italic;font-size:1.0625rem;color:var(--ink);margin-bottom:.8rem}
+.card__text{font-family:var(--serif);color:var(--ink-soft);max-width:58ch}
+.tags{display:flex;flex-wrap:wrap;gap:.4rem;margin:1rem 0 1.1rem}
+.tag{font-size:.8125rem;font-weight:500;color:var(--ink-soft);background:rgba(19,42,66,.055);
+     border-radius:999px;padding:.25rem .7rem}
+.links{display:flex;flex-wrap:wrap;gap:1.25rem;font-size:.9375rem;font-weight:600;margin:0}
+.links a{display:inline-flex;align-items:center;gap:.4rem;text-decoration:none}
+.links a:hover{text-decoration:underline}
+
+/* diagramme + coûts */
+.two{display:grid;grid-template-columns:1.55fr 1fr;gap:clamp(1.5rem,3vw,2.5rem);align-items:start}
+@media (max-width:56rem){.two{grid-template-columns:1fr}}
+.slab{background:rgba(255,255,255,.04);border:1px solid var(--rule-dk);border-radius:12px;
+      padding:clamp(1.25rem,3vw,1.75rem)}
+.slab h3{font-size:1rem;margin-bottom:1.25rem;color:rgba(255,255,255,.85)}
+.flow{width:100%;height:auto}
+.flow__box{fill:rgba(255,255,255,.06);stroke:rgba(255,255,255,.15);stroke-width:1}
+.flow__box--live{fill:rgba(240,168,60,.14);stroke:rgba(240,168,60,.5)}
+.flow__t{fill:#fff;font:600 11.5px var(--sans)}
+.flow__s{fill:rgba(255,255,255,.5);font:400 10px var(--sans)}
+.flow__link{stroke:rgba(255,255,255,.3);stroke-width:1.4;fill:none;marker-end:url(#arw)}
+.flow__link--hot{stroke:var(--signal);stroke-dasharray:4 4;animation:flowdash 1.4s linear infinite}
+@keyframes flowdash{to{stroke-dashoffset:-8}}
+@media (prefers-reduced-motion:reduce){.flow__link--hot{animation:none}}
+
+.cost{display:grid;gap:.9rem}
+.cost__row{display:grid;grid-template-columns:1fr auto;gap:.45rem .75rem;align-items:baseline;
+           font-size:.875rem;color:rgba(255,255,255,.7)}
+.cost__row>span:last-of-type{font-weight:600;color:#fff}
+.cost__bar{grid-column:1/-1;height:.375rem;border-radius:3px;background:rgba(255,255,255,.1);overflow:hidden}
+.cost__bar>i{display:block;height:100%;border-radius:3px;background:var(--road)}
+.cost__row--sum{border-top:1px solid var(--rule-dk);padding-top:.9rem;margin-top:.3rem;font-size:1rem}
+.cost__row--sum>span:last-of-type{color:var(--signal);font-size:1.375rem;font-weight:700}
+.slab--cost>p{font-size:.8125rem;color:rgba(255,255,255,.45);margin:1.1rem 0 0;line-height:1.55}
+
+/* compétences */
+.sets{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1.5rem}
+.set{background:var(--panel);border:1px solid var(--rule);border-radius:10px;padding:1.5rem;box-shadow:var(--shadow)}
+.band--panel .set{background:var(--paper)}
+.set__head{display:flex;align-items:center;gap:.6rem;margin-bottom:1rem}
+.set__head .ico{color:var(--road)}
+.set h3{font-size:1rem}
+.set li{display:flex;align-items:center;gap:.55rem;padding:.4rem 0;font-size:.9375rem;color:var(--ink-soft)}
+.set li::before{content:"";width:.3125rem;height:.3125rem;border-radius:50%;background:var(--signal);flex:none}
+
+/* parcours */
+.log{width:100%;border-collapse:collapse;font-size:.9375rem}
+.log th{text-align:left;font-size:.8125rem;font-weight:600;color:var(--ink-soft);
+        padding:0 1rem .6rem 0;border-bottom:2px solid var(--ink)}
+.log td{padding:.85rem 1rem .85rem 0;border-bottom:1px solid var(--rule);vertical-align:top}
+.log tbody tr:hover td{background:rgba(74,144,217,.05)}
+.log td:first-child{white-space:nowrap;color:var(--ink-soft);width:1%}
+.log td:nth-child(2){font-weight:600;color:var(--ink)}
+.pill{display:inline-block;font-size:.75rem;font-weight:600;padding:.15rem .55rem;border-radius:3px}
+.pill--tech{background:rgba(63,182,168,.18);color:#1c766c}
+.pill--log{background:rgba(74,144,217,.15);color:#2a6cad}
+@media (max-width:46rem){
+  .log,.log tbody,.log tbody tr,.log td{display:block;width:100%}
+  .log thead{display:none}
+  .log tbody tr{border-bottom:1px solid var(--rule);padding-block:.9rem}
+  .log td{border:0;padding:.1rem 0}
+}
+
+/* contact */
+.reach{display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:1rem;margin-top:2rem}
+.reach a{display:flex;align-items:center;gap:.85rem;padding:1.1rem 1.25rem;text-decoration:none;
+         background:rgba(255,255,255,.05);border:1px solid var(--rule-dk);border-radius:10px;
+         color:#fff;font-weight:600;font-size:.9375rem;transition:background .15s ease}
+.reach a:hover{background:rgba(255,255,255,.1);color:#fff}
+.reach .ico{color:var(--signal)}
+.reach small{display:block;font-weight:400;font-size:.8125rem;color:rgba(255,255,255,.5);margin-top:.15rem}
+
+.foot{background:var(--navy-900);color:rgba(255,255,255,.45);
+      border-top:1px solid var(--rule-dk);padding-block:2rem 3rem;font-size:.875rem}
+.foot p{margin:0}
+</style>
+</head>
+
+<body data-lang="fr">
+<a class="skip" href="#main"><span lang="fr">Aller au contenu</span><span lang="en">Skip to content</span></a>
+
+<!-- ═══ jeu d’icônes ═══ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <symbol id="i-truck" viewBox="0 0 24 24"><path d="M2 6h11v10H2z"/><path d="M13 9h4l4 4v3h-8z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></symbol>
+  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 18a4.5 4.5 0 0 0 .3-9A6 6 0 0 0 6.2 10.4 3.8 3.8 0 0 0 7 18z"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="m9 17-5-5 5-5"/><path d="m15 7 5 5-5 5"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18z"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.5"/><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="9" r="2.5"/><path d="M6 7.5v9M18 11.5c0 3-4 2.5-6 5"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6z"/><path d="m9.5 12 1.8 1.8 3.4-3.6"/></symbol>
+  <symbol id="i-pulse" viewBox="0 0 24 24"><path d="M3 12h4l2.5-6 4 12L16 12h5"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 6.5 8.5 6 8.5-6"/></symbol>
+  <symbol id="i-github" viewBox="0 0 24 24"><path d="M9 19c-4 1.3-4-2.2-6-2.7m12 5.4v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.2s-1-.3-3.4 1.3a11.6 11.6 0 0 0-6 0C6.7 3.5 5.7 3.8 5.7 3.8a4.3 4.3 0 0 0-.1 3.2A4.6 4.6 0 0 0 4.3 10c0 4.6 2.7 5.7 5.5 6-.4.4-.5.9-.5 1.5V21"/></symbol>
+  <symbol id="i-linkedin" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7.5 10.5V17M7.5 7.4v.01M11.5 17v-3.8a2.2 2.2 0 0 1 4.4 0V17"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+  <symbol id="i-euro" viewBox="0 0 24 24"><path d="M17 6.5A6.5 6.5 0 0 0 7.5 12 6.5 6.5 0 0 0 17 17.5"/><path d="M4 10.5h8M4 13.5h8"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r=".8" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="m4 17 5-4.5 4.5 4 3-2.5L20 18"/></symbol>
+</defs></svg>
+
+<header class="dock">
+  <div class="wrap dock__in">
+    <a class="dock__mark" href="#main"><svg class="ico"><use href="#i-truck"/></svg>Mateus&nbsp;Pavão</a>
+    <nav class="dock__nav">
+      <a href="#profil"><span lang="fr">Profil</span><span lang="en">Profile</span></a>
+      <a href="#projets"><span lang="fr">Projets</span><span lang="en">Work</span></a>
+      <a href="#stack"><span lang="fr">Ce site</span><span lang="en">This site</span></a>
+      <a href="#parcours"><span lang="fr">Parcours</span><span lang="en">Track record</span></a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="lang">
+      <button type="button" data-set="fr" aria-pressed="true">FR</button>
+      <button type="button" data-set="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ═══════════════ HÉROS ═══════════════ -->
+<section class="hero">
+  <div class="wrap hero__in">
+    <div>
+      <span class="hero__eyebrow">
+        <span class="hero__dot"></span>
+        <span lang="fr">Disponible — Lyon ou télétravail</span>
+        <span lang="en">Available — Lyon or remote</span>
+      </span>
+      <h1>
+        <span lang="fr">Six ans à déplacer des marchandises. Aujourd’hui, des conteneurs.</span>
+        <span lang="en">Six years moving freight. Now moving containers.</span>
+      </h1>
+      <p class="hero__sub">
+        <span lang="fr">Ingénieur cloud à Lyon. Terraform, AWS, Docker, Kubernetes — et six ans d’affrètement routier qui m’ont appris ce que coûte une heure d’arrêt.</span>
+        <span lang="en">Cloud engineer in Lyon. Terraform, AWS, Docker, Kubernetes — plus six years in road freight that taught me what an hour of downtime really costs.</span>
+      </p>
+      <div class="cta">
+        <a class="btn btn--solid" href="#projets">
+          <svg class="ico"><use href="#i-layers"/></svg>
+          <span lang="fr">Voir les projets</span><span lang="en">See the work</span>
+        </a>
+        <a class="btn btn--ghost" href="#contact">
+          <svg class="ico"><use href="#i-mail"/></svg>
+          <span lang="fr">Me contacter</span><span lang="en">Get in touch</span>
+        </a>
+      </div>
+    </div>
+
+    <svg class="map" viewBox="0 0 460 340" role="img"
+         aria-label="Trajet de carrière : São Paulo 2008, Dublin 2015, Amsterdam 2017, Lyon 2024">
+      <g class="map__grid">
+        <path d="M0 40h460M0 100h460M0 160h460M0 220h460M0 280h460"/>
+        <path d="M60 0v340M140 0v340M220 0v340M300 0v340M380 0v340"/>
+      </g>
+      <path class="map__arc" d="M55 265 C 120 165, 190 120, 245 95"/>
+      <path class="map__arc" d="M245 95 C 285 82, 315 88, 340 108"/>
+      <path class="map__arc" d="M340 108 C 372 138, 388 190, 380 232"/>
+      <path class="map__run" d="M55 265 C 120 165, 190 120, 245 95 C 285 82, 315 88, 340 108 C 372 138, 388 190, 380 232"/>
+
+      <circle class="map__node" cx="55" cy="265" r="6"/>
+      <text class="map__code" x="55" y="292" text-anchor="middle">SAO</text>
+      <text class="map__city" x="55" y="307" text-anchor="middle">2008</text>
+
+      <circle class="map__node" cx="245" cy="95" r="6"/>
+      <text class="map__code" x="245" y="76" text-anchor="middle">DUB</text>
+      <text class="map__city" x="245" y="61" text-anchor="middle">2013</text>
+
+      <circle class="map__node" cx="340" cy="108" r="6"/>
+      <text class="map__code" x="340" y="89" text-anchor="middle">AMS</text>
+      <text class="map__city" x="340" y="74" text-anchor="middle">2017</text>
+
+      <circle class="map__halo" cx="380" cy="232" r="7"/>
+      <circle class="map__node map__node--live" cx="380" cy="232" r="6"/>
+      <text class="map__code" x="380" y="259" text-anchor="middle">LYS</text>
+      <text class="map__city" x="380" y="274" text-anchor="middle">2024</text>
+
+      <text class="map__leg" x="132" y="182">banque, assurance</text>
+      <text class="map__leg" x="272" y="124">supply chain, code</text>
+      <text class="map__leg" x="392" y="172">cloud</text>
+    </svg>
+  </div>
+
+  <div class="wrap">
+    <div class="figs">
+      <div class="fig">
+        <svg class="ico ico--lg fig__ico"><use href="#i-truck"/></svg>
+        <div class="fig__n">6 <span lang="fr">ans</span><span lang="en">yrs</span></div>
+        <div class="fig__l"><span lang="fr">d’affrètement routier européen</span><span lang="en">of European road chartering</span></div>
+      </div>
+      <div class="fig">
+        <svg class="ico ico--lg fig__ico"><use href="#i-cloud"/></svg>
+        <div class="fig__n">3 <span lang="fr">ans</span><span lang="en">yrs</span></div>
+        <div class="fig__l"><span lang="fr">de développement et d’infrastructure</span><span lang="en">of development and infrastructure</span></div>
+      </div>
+      <div class="fig">
+        <svg class="ico ico--lg fig__ico"><use href="#i-globe"/></svg>
+        <div class="fig__n">4</div>
+        <div class="fig__l"><span lang="fr">langues de travail</span><span lang="en">working languages</span></div>
+      </div>
+      <div class="fig">
+        <svg class="ico ico--lg fig__ico"><use href="#i-euro"/></svg>
+        <div class="fig__n">3,50 €</div>
+        <div class="fig__l"><span lang="fr">le coût mensuel du serveur qui sert cette page</span><span lang="en">monthly cost of the server behind this page</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PROFIL ═══════════════ -->
+<section class="band" id="profil">
+  <div class="wrap">
+    <div class="split">
+      <!-- PHOTO : remplacez tout le <div class="portrait__ph"> par
+           <img src="images/portrait.jpg" alt="Mateus Pavão"> -->
+      <figure class="portrait">
+        <div class="portrait__ph">
+          <b>MP</b>
+          <span lang="fr">Votre portrait ici<br>ratio 4:5, ~800×1000 px</span>
+          <span lang="en">Your portrait here<br>4:5 ratio, ~800×1000 px</span>
+        </div>
+      </figure>
+
+      <div>
+        <div class="head" style="margin-bottom:1.5rem">
+          <div class="head__kicker">
+            <svg class="ico"><use href="#i-target"/></svg>
+            <span lang="fr">Profil</span><span lang="en">Profile</span>
+          </div>
+          <h2><span lang="fr">Deux métiers, un seul réflexe : que le flux ne s’arrête pas.</span>
+              <span lang="en">Two trades, one instinct: keep the flow moving.</span></h2>
+        </div>
+
+        <div class="prose">
+          <div lang="fr">
+            <p>Je suis ingénieur cloud et affréteur. Dans cet ordre inhabituel : trois ans à écrire du code et à provisionner de l’infrastructure, six ans à acheter de la capacité de transport à travers l’Europe.</p>
+            <p>Concrètement : je lis un incident sans paniquer, parce que j’ai passé des années à débloquer des camions à la frontière un vendredi soir. Je comprends ce que veut vraiment un client interne, parce que j’en ai été un. Et j’écris du Terraform.</p>
+            <p>Je cherche un poste d’ingénieur cloud ou DevOps à Lyon, ou en télétravail depuis Lyon. Je ne déménage pas : ma famille est installée ici.</p>
+          </div>
+          <div lang="en">
+            <p>I’m a cloud engineer and a freight charterer. In that unusual order: three years writing code and provisioning infrastructure, six years buying transport capacity across Europe.</p>
+            <p>In practice: I read an incident without panicking, because I spent years unblocking trucks at a border on a Friday night. I understand what an internal customer actually wants, because I was one. And I write Terraform.</p>
+            <p>I’m looking for a cloud or DevOps engineering role in Lyon, or remote from Lyon. I’m not relocating: my family is settled here.</p>
+          </div>
+        </div>
+
+        <!-- graphique : échelle 2008 → 2026, soit 18 ans ; 1 an ≈ 5,55 % -->
+        <div class="chart">
+          <div class="chart__top">
+            <span class="chart__title">
+              <span lang="fr">Répartition du parcours</span><span lang="en">How the years break down</span>
+            </span>
+            <span class="chart__key">
+              <span><i class="swatch" style="background:var(--slate)"></i><span lang="fr">Banque</span><span lang="en">Banking</span></span>
+              <span><i class="swatch" style="border:1px dashed var(--ink-soft)"></i><span lang="fr">Études</span><span lang="en">Studies</span></span>
+              <span><i class="swatch" style="background:var(--road)"></i><span lang="fr">Transport</span><span lang="en">Freight</span></span>
+              <span><i class="swatch" style="background:var(--teal)"></i>Tech</span>
+            </span>
+          </div>
+
+          <div class="track">
+            <span class="track__label"><span lang="fr">Banque</span><span lang="en">Banking</span></span>
+            <div class="track__rail">
+              <div class="bar bar--fin" style="left:0;width:27.8%">2008 — 2013</div>
+            </div>
+          </div>
+          <div class="track">
+            <span class="track__label"><span lang="fr">Études</span><span lang="en">Studies</span></span>
+            <div class="track__rail">
+              <div class="bar bar--study" style="left:30.6%;width:16.7%">2013 — 2016</div>
+            </div>
+          </div>
+          <div class="track">
+            <span class="track__label"><span lang="fr">Transport</span><span lang="en">Freight</span></span>
+            <div class="track__rail">
+              <div class="bar bar--log" style="left:50%;width:22.2%">2017 — 20</div>
+              <div class="bar bar--log" style="left:88.9%;width:11.1%">2024 —</div>
+            </div>
+          </div>
+          <div class="track">
+            <span class="track__label">Tech</span>
+            <div class="track__rail">
+              <div class="bar bar--tech" style="left:72.2%;width:16.7%">2021 — 2024</div>
+            </div>
+          </div>
+          <div class="axis">
+            <span style="left:0">2008</span><span style="left:33.3%">2014</span>
+            <span style="left:66.6%">2020</span><span style="left:100%">2026</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PROJETS ═══════════════ -->
+<section class="band band--panel" id="projets">
+  <div class="wrap">
+    <div class="head">
+      <div class="head__kicker">
+        <svg class="ico"><use href="#i-layers"/></svg>
+        <span lang="fr">Projets</span><span lang="en">Work</span>
+      </div>
+      <h2><span lang="fr">Ce que j’ai construit</span><span lang="en">What I’ve built</span></h2>
+      <p><span lang="fr">Trois projets publics, chacun pour prouver une chose précise. Le code est sur GitHub, l’infrastructure se recrée d’une commande.</span>
+         <span lang="en">Three public projects, each proving one specific thing. The code is on GitHub; the infrastructure rebuilds with one command.</span></p>
+    </div>
+
+    <div class="cards">
+      <article class="card">
+        <!-- CAPTURE : remplacez le <div class="shot__ph"> par
+             <img src="images/fila.png" alt="Interface de Fila do Dia"> -->
+        <div class="shot"><div class="shot__ph">
+          <svg class="ico"><use href="#i-image"/></svg>
+          <span lang="fr">Capture de l’outil<br>1600×1200 px</span>
+          <span lang="en">Screenshot<br>1600×1200 px</span>
+        </div></div>
+        <div class="card__body">
+          <div class="card__head">
+            <svg class="ico"><use href="#i-truck"/></svg>
+            <h3 class="card__name">Fila do Dia</h3>
+          </div>
+          <p class="card__claim">
+            <span lang="fr">Un outil de dispatch écrit par quelqu’un qui a fait le métier.</span>
+            <span lang="en">A dispatch tool written by someone who has done the job.</span>
+          </p>
+          <p class="card__text">
+            <span lang="fr">Import CSV des chargements du jour, moteur de rapprochement basé sur l’historique des lignes, indicateurs de marge par affaire. Application autonome, sans back-end. Le mode démo tourne sur des données européennes synthétiques : essayable sans rien installer.</span>
+            <span lang="en">CSV import of the day’s loads, a matching engine built on lane history, per-deal margin indicators. Self-contained application, no back end. Demo mode runs on synthetic European data — nothing to install.</span>
+          </p>
+          <div class="tags">
+            <span class="tag">JavaScript</span><span class="tag">HTML</span>
+            <span class="tag" lang="fr">Métier affrètement</span><span class="tag" lang="en">Freight domain</span>
+          </div>
+          <p class="links">
+            <a href="/demo/"><svg class="ico"><use href="#i-pulse"/></svg><span lang="fr">Essayer la démo</span><span lang="en">Try the demo</span></a>
+            <a href="https://github.com/mcpavao"><svg class="ico"><use href="#i-github"/></svg><span lang="fr">Code source</span><span lang="en">Source</span></a>
+          </p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="shot"><div class="shot__ph">
+          <svg class="ico"><use href="#i-image"/></svg>
+          <span lang="fr">Schéma ou terminal<br>1600×1200 px</span>
+          <span lang="en">Diagram or terminal<br>1600×1200 px</span>
+        </div></div>
+        <div class="card__body">
+          <div class="card__head">
+            <svg class="ico"><use href="#i-cloud"/></svg>
+            <h3 class="card__name"><span lang="fr">Socle web sur AWS</span><span lang="en">Web stack on AWS</span></h3>
+          </div>
+          <p class="card__claim">
+            <span lang="fr">Une infrastructure décrite en code, détruite et recréée à l’identique.</span>
+            <span lang="en">Infrastructure described in code, destroyed and rebuilt identically.</span>
+          </p>
+          <p class="card__text">
+            <span lang="fr">Machine virtuelle sur AWS région Paris, Docker et nginx, réseau et règles de sécurité — le tout provisionné par du Terraform écrit de zéro. État distant, modules séparés, rien de cliqué à la main dans la console.</span>
+            <span lang="en">A VM on AWS Paris, Docker and nginx, networking and security rules — all provisioned with Terraform written from scratch. Remote state, separate modules, nothing clicked by hand in the console.</span>
+          </p>
+          <div class="tags">
+            <span class="tag">Terraform</span><span class="tag">AWS</span><span class="tag">Docker</span><span class="tag">nginx</span>
+          </div>
+          <p class="links">
+            <a href="https://github.com/mcpavao"><svg class="ico"><use href="#i-github"/></svg><span lang="fr">Code source</span><span lang="en">Source</span></a>
+          </p>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="shot"><div class="shot__ph">
+          <svg class="ico"><use href="#i-image"/></svg>
+          <span lang="fr">Capture kubectl<br>1600×1200 px</span>
+          <span lang="en">kubectl screenshot<br>1600×1200 px</span>
+        </div></div>
+        <div class="card__body">
+          <div class="card__head">
+            <svg class="ico"><use href="#i-box"/></svg>
+            <h3 class="card__name">k8s-nginx</h3>
+          </div>
+          <p class="card__claim">
+            <span lang="fr">Un service qui redémarre tout seul quand il tombe.</span>
+            <span lang="en">A service that restarts itself when it falls over.</span>
+          </p>
+          <p class="card__text">
+            <span lang="fr">Deployment et Service nginx sur un cluster kind local, avec sondes readiness et liveness. L’enjeu n’était pas la taille du cluster mais le cycle de vie : ce que fait Kubernetes quand un conteneur cesse de répondre.</span>
+            <span lang="en">An nginx Deployment and Service on a local kind cluster, with readiness and liveness probes. The point wasn’t cluster size but lifecycle: what Kubernetes does when a container stops answering.</span>
+          </p>
+          <div class="tags">
+            <span class="tag">Kubernetes</span><span class="tag">kind</span><span class="tag">YAML</span>
+          </div>
+          <p class="links">
+            <a href="https://github.com/mcpavao"><svg class="ico"><use href="#i-github"/></svg><span lang="fr">Code source</span><span lang="en">Source</span></a>
+          </p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CE SITE ═══════════════ -->
+<section class="band band--dark" id="stack">
+  <div class="wrap">
+    <div class="head">
+      <div class="head__kicker">
+        <svg class="ico"><use href="#i-branch"/></svg>
+        <span lang="fr">Ce site</span><span lang="en">This site</span>
+      </div>
+      <h2><span lang="fr">Cette page est servie depuis un cluster posé chez moi</span>
+          <span lang="en">This page is served from a cluster sitting in my flat</span></h2>
+      <p><span lang="fr">Un thin client de 2013, Debian sans interface, k3s. Le cluster n’a aucune entrée : il récupère son image et sort par un tunnel. Rien n’est cliqué à la main, un push suffit.</span>
+         <span lang="en">A 2013 thin client, headless Debian, k3s. The cluster has no inbound access: it pulls its image and dials out through a tunnel. Nothing is clicked by hand — one push is enough.</span></p>
+    </div>
+
+    <div class="two">
+      <div class="slab">
+        <h3><span lang="fr">Chaîne de livraison</span><span lang="en">Delivery pipeline</span></h3>
+        <svg class="flow" viewBox="0 0 640 320" role="img"
+             aria-label="git push déclenche GitHub Actions qui publie une image sur GHCR ; le cluster k3s à la maison récupère l'image, et cloudflared ouvre un tunnel sortant vers Cloudflare, qui sert le visiteur">
+          <defs>
+            <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M0 0 10 5 0 10z" fill="rgba(255,255,255,.35)"/>
+            </marker>
+          </defs>
+
+          <!-- chaîne de publication -->
+          <rect class="flow__box" x="8" y="14" width="124" height="50" rx="6"/>
+          <text class="flow__t" x="24" y="37">git push</text>
+          <text class="flow__s" x="24" y="53" lang="fr">branche main</text>
+          <text class="flow__s" x="24" y="53" lang="en">main branch</text>
+
+          <rect class="flow__box" x="168" y="14" width="148" height="50" rx="6"/>
+          <text class="flow__t" x="184" y="37">GitHub Actions</text>
+          <text class="flow__s" x="184" y="53" lang="fr">build de l’image</text>
+          <text class="flow__s" x="184" y="53" lang="en">image build</text>
+
+          <rect class="flow__box" x="352" y="14" width="100" height="50" rx="6"/>
+          <text class="flow__t" x="368" y="37">GHCR</text>
+          <text class="flow__s" x="368" y="53" lang="fr">registre</text>
+          <text class="flow__s" x="368" y="53" lang="en">registry</text>
+
+          <rect class="flow__box flow__box--live" x="488" y="14" width="110" height="50" rx="6"/>
+          <text class="flow__t" x="504" y="37" lang="fr">visiteur</text>
+          <text class="flow__t" x="504" y="37" lang="en">visitor</text>
+          <text class="flow__s" x="504" y="53" lang="fr">vous</text>
+          <text class="flow__s" x="504" y="53" lang="en">you</text>
+
+          <!-- le cluster, à la maison -->
+          <rect x="8" y="110" width="404" height="160" rx="8"
+                fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.22)"
+                stroke-width="1" stroke-dasharray="5 4"/>
+          <text class="flow__s" x="26" y="134" lang="fr">cluster k3s · HP t620 · à la maison</text>
+          <text class="flow__s" x="26" y="134" lang="en">k3s cluster · HP t620 · at home</text>
+
+          <rect class="flow__box" x="28" y="150" width="160" height="52" rx="6"/>
+          <text class="flow__t" x="44" y="173">cloudflared</text>
+          <text class="flow__s" x="44" y="189" lang="fr">sortie uniquement</text>
+          <text class="flow__s" x="44" y="189" lang="en">outbound only</text>
+
+          <rect class="flow__box" x="220" y="150" width="160" height="52" rx="6"/>
+          <text class="flow__t" x="236" y="173">nginx</text>
+          <text class="flow__s" x="236" y="189" lang="fr">les pages du site</text>
+          <text class="flow__s" x="236" y="189" lang="en">the site pages</text>
+
+          <rect class="flow__box flow__box--live" x="488" y="202" width="110" height="52" rx="6"/>
+          <text class="flow__t" x="504" y="225">Cloudflare</text>
+          <text class="flow__s" x="504" y="241" lang="fr">TLS, cache</text>
+          <text class="flow__s" x="504" y="241" lang="en">TLS, caching</text>
+
+          <!-- liens -->
+          <path class="flow__link" d="M132 39 h36"/>
+          <path class="flow__link" d="M316 39 h36"/>
+          <path class="flow__link" d="M402 64 V116 H300 V150"/>
+          <path class="flow__link" d="M188 176 h32"/>
+          <path class="flow__link" d="M543 64 V202"/>
+          <path class="flow__link flow__link--hot" d="M108 202 V292 H543 V254"/>
+
+          <text class="flow__s" x="150" y="308" lang="fr">tunnel sortant — aucun port ouvert sur la box</text>
+          <text class="flow__s" x="150" y="308" lang="en">outbound tunnel — no port opened on the router</text>
+        </svg>
+      </div>
+
+      <div class="slab slab--cost">
+        <h3><span lang="fr">Coût réel, par mois</span><span lang="en">Real monthly cost</span></h3>
+        <div class="cost">
+          <div class="cost__row">
+            <span lang="fr">Électricité — 13 W en continu</span><span lang="en">Electricity — 13 W continuous</span>
+            <span>2,50 €</span>
+            <i class="cost__bar"><i style="width:71%"></i></i></div>
+          <div class="cost__row">
+            <span lang="fr">Nom de domaine</span><span lang="en">Domain name</span>
+            <span>1,00 €</span>
+            <i class="cost__bar"><i style="width:29%"></i></i></div>
+          <div class="cost__row">
+            <span lang="fr">Cloudflare — DNS et tunnel</span><span lang="en">Cloudflare — DNS and tunnel</span>
+            <span>0,00 €</span>
+            <i class="cost__bar"><i style="width:2%"></i></i></div>
+          <div class="cost__row">
+            <span lang="fr">GitHub Actions et GHCR</span><span lang="en">GitHub Actions and GHCR</span>
+            <span>0,00 €</span>
+            <i class="cost__bar"><i style="width:2%"></i></i></div>
+          <div class="cost__row cost__row--sum">
+            <span lang="fr">Total</span><span lang="en">Total</span><span>3,50 €</span>
+          </div>
+        </div>
+        <p><span lang="fr">Le serveur est un thin client de 2013 que j’avais déjà : 0 € de matériel. L’électricité est estimée à partir de la consommation mesurée, le reste est facturé.</span>
+           <span lang="en">The server is a 2013 thin client I already owned: €0 of hardware. Electricity is estimated from measured draw; everything else is billed.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ COMPÉTENCES ═══════════════ -->
+<section class="band">
+  <div class="wrap">
+    <div class="head">
+      <div class="head__kicker">
+        <svg class="ico"><use href="#i-shield"/></svg>
+        <span lang="fr">Compétences</span><span lang="en">Skills</span>
+      </div>
+      <h2><span lang="fr">Ce que je sais faire</span><span lang="en">What I can do</span></h2>
+    </div>
+    <div class="sets">
+      <div class="set">
+        <div class="set__head"><svg class="ico"><use href="#i-cloud"/></svg><h3>Infrastructure</h3></div>
+        <ul>
+          <li>AWS — EC2, S3, IAM, VPC, Route 53</li>
+          <li>Terraform</li><li>Docker</li><li>Kubernetes, k3s</li><li>Linux, nginx</li>
+        </ul>
+      </div>
+      <div class="set">
+        <div class="set__head"><svg class="ico"><use href="#i-branch"/></svg>
+          <h3><span lang="fr">Livraison</span><span lang="en">Delivery</span></h3></div>
+        <ul>
+          <li>GitHub Actions, GHCR</li><li>Git</li><li>Ansible</li>
+          <li>Cloudflare Tunnel</li>
+        </ul>
+      </div>
+      <div class="set">
+        <div class="set__head"><svg class="ico"><use href="#i-code"/></svg>
+          <h3><span lang="fr">Développement</span><span lang="en">Development</span></h3></div>
+        <ul><li>Ruby on Rails</li><li>JavaScript</li><li>SQL</li><li>HTML, CSS</li></ul>
+      </div>
+      <div class="set">
+        <div class="set__head"><svg class="ico"><use href="#i-globe"/></svg>
+          <h3><span lang="fr">Langues</span><span lang="en">Languages</span></h3></div>
+        <ul>
+          <li><span lang="fr">Portugais — langue maternelle</span><span lang="en">Portuguese — native</span></li>
+          <li><span lang="fr">Anglais — courant</span><span lang="en">English — fluent</span></li>
+          <li><span lang="fr">Français — B2 professionnel</span><span lang="en">French — professional B2</span></li>
+          <li><span lang="fr">Espagnol - B2 professionnel</span><span lang="en">Spanish - professional B2</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PARCOURS ═══════════════ -->
+<section class="band band--panel" id="parcours">
+  <div class="wrap">
+    <div class="head">
+      <div class="head__kicker">
+        <svg class="ico"><use href="#i-clock"/></svg>
+        <span lang="fr">Parcours</span><span lang="en">Track record</span>
+      </div>
+      <h2><span lang="fr">Où je suis passé</span><span lang="en">Where I’ve been</span></h2>
+    </div>
+    <table class="log">
+      <thead>
+        <tr>
+          <th><span lang="fr">Période</span><span lang="en">Period</span></th>
+          <th><span lang="fr">Poste</span><span lang="en">Role</span></th>
+          <th><span lang="fr">Structure</span><span lang="en">Company</span></th>
+          <th><span lang="fr">Domaine</span><span lang="en">Field</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>2024 —</td><td>Capacity Manager</td><td>sennder · Lyon</td>
+            <td><span class="pill pill--log"><span lang="fr">Transport</span><span lang="en">Freight</span></span></td></tr>
+        <tr><td>2023</td><td>Cloud Engineer</td><td>SiteSpect · Utrecht</td>
+            <td><span class="pill pill--tech">Tech</span></td></tr>
+        <tr><td>2022</td><td><span lang="fr">Développeur Ruby on Rails</span><span lang="en">Ruby on Rails Developer</span></td>
+            <td>StellarUp · Amsterdam</td><td><span class="pill pill--tech">Tech</span></td></tr>
+        <tr><td>2021</td><td><span lang="fr">Développeur web</span><span lang="en">Web Developer</span></td>
+            <td>SAMURE · Almere</td><td><span class="pill pill--tech">Tech</span></td></tr>
+        <tr><td>2018 — 2021</td><td>Senior Carrier Representative</td><td>Coyote Logistics (UPS) · Amsterdam</td>
+            <td><span class="pill pill--log"><span lang="fr">Transport</span><span lang="en">Freight</span></span></td></tr>
+        <tr><td>2017</td><td>Supply Chain Analyst</td>
+            <td>XPO Logistics · <span lang="fr">Pays-Bas</span><span lang="en">Netherlands</span></td>
+            <td><span class="pill pill--log"><span lang="fr">Transport</span><span lang="en">Freight</span></span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════ CONTACT ═══════════════ -->
+<section class="band band--dark" id="contact">
+  <div class="wrap">
+    <div class="head">
+      <div class="head__kicker"><svg class="ico"><use href="#i-mail"/></svg>Contact</div>
+      <h2><span lang="fr">Parlons-en</span><span lang="en">Let’s talk</span></h2>
+      <p><span lang="fr">Basé à Lyon, disponible sur site dans la métropole ou en télétravail. Je travaille en français, en espagnol en anglais et en portugais.</span>
+         <span lang="en">Based in Lyon, available on site across the metro area or remote. I work in French, English, Spanish and Portuguese.</span></p>
+    </div>
+    <div class="reach">
+      <a href="mailto:mateus_e_mateus@hotmail.com">
+        <svg class="ico ico--lg"><use href="#i-mail"/></svg>
+        <span><span lang="fr">E-mail</span><span lang="en">Email</span><small>mateus_e_mateus@hotmail.com</small></span>
+      </a>
+      <a href="https://github.com/mcpavao">
+        <svg class="ico ico--lg"><use href="#i-github"/></svg>
+        <span>GitHub<small>github.com/mcpavao</small></span>
+      </a>
+      <a href="https://www.linkedin.com/in/VOTRE-PROFIL/">
+        <svg class="ico ico--lg"><use href="#i-linkedin"/></svg>
+        <span>LinkedIn<small><span lang="fr">Profil complet</span><span lang="en">Full profile</span></small></span>
+      </a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>
+      <span lang="fr">Mateus Pavão — Lyon, France. Mis à jour en septembre 2026.</span>
+      <span lang="en">Mateus Pavão — Lyon, France. Updated September 2026.</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var body = document.body, buttons = document.querySelectorAll('.lang button');
+  function setLang(code) {
+    body.dataset.lang = code;
+    document.documentElement.lang = code;
+    buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.set === code)); });
+    try { localStorage.setItem('lang', code); } catch (e) {}
+  }
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () { setLang(b.dataset.set); });
+  });
+  var saved = null;
+  try { saved = localStorage.getItem('lang'); } catch (e) {}
+  if (saved === 'fr' || saved === 'en') setLang(saved);
+  else if (!(navigator.language || '').toLowerCase().startsWith('fr')) setLang('en');
+})();
+</script>
+</body>
+</html>

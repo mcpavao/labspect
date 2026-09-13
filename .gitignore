@@ -1,0 +1,15 @@
+# Jamais de secrets dans le dépôt
+*token*
+*secret*
+*.key
+*.pem
+kubeconfig
+*.kubeconfig
+
+# macOS
+.DS_Store
+
+# Éditeurs
+.vscode/
+.idea/
+*.swp

@@ -17,8 +17,8 @@ spec:
   imageRepositoryRef:
     name: labspect
   filterTags:
-    pattern: '^sha-(?P<sha>[a-f0-9]+)$'
-    extract: '$sha'
+    pattern: '^(?P<ts>[0-9]{14})-.*$'
+    extract: '$ts'
   policy:
     alphabetical:
       order: asc

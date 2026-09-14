@@ -16,7 +16,7 @@ spec:
       author:
         name: flux
         email: flux@labspect.com
-      messageTemplate: "image: {{range .Updated.Images}}{{println .}}{{end}}"
+      messageTemplate: "image: {{range .Changed.Changes}}{{println .NewValue}}{{end}}"
     push:
       branch: main
   update:

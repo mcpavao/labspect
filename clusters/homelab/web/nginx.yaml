@@ -23,7 +23,7 @@ spec:
       containers:
         - name: nginx
           # Remplacez mcpavao/labspect par le chemin réel du dépôt.
-          image: ghcr.io/mcpavao/labspect:20260914101602-c29e4a9 # {"$imagepolicy": "flux-system:labspect"}
+          image: ghcr.io/mcpavao/labspect:20260914101946-176b20b # {"$imagepolicy": "flux-system:labspect"}
           imagePullPolicy: Always
           ports:
             - name: http

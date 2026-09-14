@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -24,7 +23,7 @@ spec:
       containers:
         - name: nginx
           # Remplacez mcpavao/labspect par le chemin réel du dépôt.
-          image: ghcr.io/mcpavao/labspect:latest # {"$imagepolicy": "flux-system:labspect"}
+          image: ghcr.io/mcpavao/labspect:sha-ce421c203c95a88e0995df789c4bebc9857922b2 # {"$imagepolicy": "flux-system:labspect"}
           imagePullPolicy: Always
           ports:
             - name: http
@@ -65,4 +64,3 @@ spec:
     - name: http
       port: 80
       targetPort: http
-

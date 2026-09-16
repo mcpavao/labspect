@@ -187,3 +187,6 @@ repositories. The site itself is bilingual French and English.
 
 ## Decision about Prometheus and Grafana
 O Grafana é publicado via túnel Cloudflare com Cloudflare Access na frente, em modelo default-deny com whitelist por e-mail. O painel nunca fica acessível na internet aberta, e o cluster não expõe nenhuma porta. O acesso passa pelo Traefik, mantendo um ponto único de entrada para roteamento e observabilidade.
+
+## Test False Positive with BetterStack 
+O monitoramento interno roda no mesmo cluster que observa, então não detecta a queda do próprio host. Um verificador externo cobre esse ponto cego: se o servidor ficar indisponível, o alerta parte de fora da infraestrutura observada.

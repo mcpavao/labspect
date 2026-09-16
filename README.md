@@ -183,3 +183,7 @@ isn't.
 
 The README is in English because that is the convention for public
 repositories. The site itself is bilingual French and English.
+
+
+## Decision about Prometheus and Grafana
+O Grafana é publicado via túnel Cloudflare com Cloudflare Access na frente, em modelo default-deny com whitelist por e-mail. O painel nunca fica acessível na internet aberta, e o cluster não expõe nenhuma porta. O acesso passa pelo Traefik, mantendo um ponto único de entrada para roteamento e observabilidade.

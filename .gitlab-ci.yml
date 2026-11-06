@@ -1,4 +1,3 @@
 hello:
   script:
     - echo "pipeline rodando"
-    
